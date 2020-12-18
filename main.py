@@ -21,47 +21,33 @@ def load_df():
 
 ###########
 
-
-df = load_df()
-df = df[df["iso_code"] == "JPN"]
-df = df["new_cases"]
-
-df
-
-a = "test"
-
-f"""
-# 分析アプリ
-"""
-
-st.bar_chart(df)
-
 ###########
 
-# # 日付セレクターを作成
-# selected_from = st.sidebar.date_input(
-#     "開始日", datetime.datetime.strptime("2020-04-01", "%Y-%m-%d"))
-# selected_to = st.sidebar.date_input("終了日", datetime.date.today())
 
-# # 国セレクターを作成
-# selected_country = st.sidebar.selectbox("国", countries)
+# 日付セレクターを作成
+selected_from = st.sidebar.date_input(
+    "開始日", datetime.datetime.strptime("2020-04-01", "%Y-%m-%d"))
+selected_to = st.sidebar.date_input("終了日", datetime.date.today())
 
-# # セレクターに応じてデータを編集
-# df = load_df()
-# df = df[df["iso_code"] == selected_country]
-# df = df.drop("iso_code", axis=1)
-# df = df.query("@selected_from <= date <= @selected_to")
+# 国セレクターを作成
+selected_country = st.sidebar.selectbox("国", countries)
 
-# # カラムセレクターを作成
-# selected_cols = st.sidebar.multiselect("グラフを表示するデータ", df.columns)
+# セレクターに応じてデータを編集
+df = load_df()
+df = df[df["iso_code"] == selected_country]
+df = df.drop("iso_code", axis=1)
+df = df.query("@selected_from <= date <= @selected_to")
 
-# # グラフなどを描画
-# f"""
-# # {selected_country}の日別推移グラフ
-# > 期間：{selected_from} ~ {selected_to}
-# """
-# for c in selected_cols:
-#     st.bar_chart(df[c])
-#     f"""
-#     ---
-#     """
+# カラムセレクターを作成
+selected_cols = st.sidebar.multiselect("グラフを表示するデータ", df.columns)
+
+# グラフなどを描画
+f"""
+# {selected_country}の日別推移グラフ
+> 期間：{selected_from} ~ {selected_to}
+"""
+for c in selected_cols:
+    st.bar_chart(df[c])
+    f"""
+    ---
+    """
